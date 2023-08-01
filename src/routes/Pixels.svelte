@@ -7,6 +7,8 @@
     /** @type string[] */
     export let colors;
 
+    export let timeout = false;
+
     const dispatch = createEventDispatcher();
 </script>
 
@@ -16,7 +18,7 @@
             <tr>
                 {#each row as colorIndex, x}
                     <td>
-                        <button style="background-color: {colors[colorIndex]};" on:click={() => dispatch("paint", { x, y })}></button>
+                        <button disabled={timeout} style="background-color: {colors[colorIndex]};" on:click={() => dispatch("paint", { x, y })}></button>
                     </td>
                 {/each}
             </tr>
@@ -38,6 +40,10 @@
         cursor: crosshair;
         border: none;
 	}
+
+    button:disabled {
+        cursor: wait;
+    }
 
 	button:hover {
 		transform: scale(1.5);

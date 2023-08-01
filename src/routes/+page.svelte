@@ -7,6 +7,7 @@
 	export let data;
 
 	let currentColorIndex = 0;
+	let timeout = false;
 	const colors = ["#EC4E20", "#04A777", "#2274A5", "#613F75", "#FFBC0A", "#FBFEF9", "#27233A"];
 
 	const channels = new Channels(PUBLIC_PUSHER_KEY, {
@@ -26,6 +27,7 @@
 		const initialColorIndex = data.pixels[y][x];
 
 		data.pixels[y][x] = currentColorIndex;
+		timeout = true;
 
 		const response = await fetch(`/${x}x${y}`, {
 			method: 'PUT',
@@ -35,14 +37,17 @@
 			}
 		});
 
-		if (!response.ok) {
+		if (response.ok) {
+			setTimeout(() => timeout = false, 3000);
+		} else {
 			data.pixels[y][x] = initialColorIndex;
+			timeout = false;
 		}
 	}
 </script>
 
 <main>
-	<Pixels {colors} pixels={data.pixels} on:paint={paint} />
+	<Pixels {colors} pixels={data.pixels} {timeout} on:paint={paint} />
 
 	<ColorPicker bind:currentColorIndex {colors} />
 </main>

@@ -10,6 +10,7 @@ function makePixels(size) {
 }
 
 db.set('pixels', makePixels(25));
+db.set('placementDates', new Map());
 
 export function getPixels() {
     return db.get('pixels');
@@ -22,4 +23,26 @@ export function getPixels() {
  */
 export function setPixel(x, y, colorIndex) {
     db.get('pixels')[y][x] = colorIndex;
+}
+
+/**
+ * @param {string} userid 
+ * @returns {Date}
+ */
+export function getLastPlacementDate(userid) {
+    /** @type {Map<string, Date>} */
+    const placementDates = db.get('placementDates');
+
+    return placementDates.get(userid) ?? new Date(Date.now() - 3000);
+}
+
+/**
+ * @param {string} userid 
+ * @param {Date} date 
+ */
+export function setLastPlacementDate(userid, date) {
+    /** @type {Map<string, Date>} */
+    const placementDates = db.get('placementDates');
+
+    placementDates.set(userid, date);
 }
