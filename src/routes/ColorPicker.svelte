@@ -1,29 +1,30 @@
 <script>
-    import { colors } from "$lib/pixels";
+    /** @type {number} */
+    export let currentColorIndex;
 
-    /** @type {string} */
-    export let currentColor;
+    /** @type {string[]}*/
+    export let colors;
 
     /**
-     * @param color {string}
+     * @param colorIndex {number}
      */
-    function pick(color) {
-        currentColor = color;
+    function pick(colorIndex) {
+        currentColorIndex = colorIndex;
     }
 </script>
 
 <table>
     <tr>
-        {#each colors as color}
+        {#each colors as color, colorIndex}
             <td
                 style="background-color: {color};"
-                on:click={() => pick(color)}
+                on:click={() => pick(colorIndex)}
                 on:keydown={(e) => {
                     if (e.key === 'Enter') {
-                        pick(color);
+                        pick(colorIndex);
                     }
                 }}
-                aria-current={currentColor === color}
+                aria-current={currentColorIndex === colorIndex}
             ></td>
         {/each}
     </tr>

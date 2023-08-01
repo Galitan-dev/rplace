@@ -1,36 +1,30 @@
 <script>
-	import { pixels } from '$lib/pixels';
+    /** @type {number[][]} */
+    export let pixels;
 
-    
-    /** @type {string} */
-     export let currentColor;
+    /** @type {number} */
+    export let currentColorIndex;
+
+    /** @type string[] */
+    export let colors;
 
     /**
      * @param x {number}
      * @param y {number}
      */
     function paint(x, y) {
-        pixels.update((rows) => {
-            rows[y][x] = currentColor;
-            return rows;
-        });
+        pixels[y][x] = currentColorIndex;
     }
 </script>
 
 <table>
     <tbody>
-        {#each $pixels as row, y}
+        {#each pixels as row, y}
             <tr>
-                {#each row as color, x}
-                    <td 
-                        style="background-color: {color};" 
-                        on:click={() => paint(x, y)} 
-                        on:keydown={(e) => {
-                            if (e.key == "Enter") {
-                                paint(x, y);
-                            }
-                        }}
-                    ></td>
+                {#each row as colorIndex, x}
+                    <td>
+                        <button style="background-color: {colors[colorIndex]};" on:click={() => paint(x, y)}></button>
+                    </td>
                 {/each}
             </tr>
         {/each}
@@ -43,14 +37,16 @@
         border-radius: 10px;
         overflow: hidden;
 	}
-	
-	td {
+
+	button {
+        display: block;
 		height: 20px;
 		width: 20px;
         cursor: crosshair;
+        border: none;
 	}
 
-	td:hover {
+	button:hover {
 		transform: scale(1.5);
 	}
 </style>
