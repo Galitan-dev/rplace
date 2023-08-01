@@ -15,8 +15,6 @@ export async function PUT({ request, params }) {
         cluster: PUBLIC_PUSHER_CLUSTER
     });
 
-    if (y === 0) return new Response(null, { status: 400 });
-
     if (isNaN(x) || isNaN(y) || typeof colorIndex !== 'number') {
         return new Response(null, { status: 400 });
     }
