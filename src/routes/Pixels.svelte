@@ -1,20 +1,13 @@
 <script>
+    import { createEventDispatcher } from 'svelte';
+
     /** @type {number[][]} */
     export let pixels;
-
-    /** @type {number} */
-    export let currentColorIndex;
 
     /** @type string[] */
     export let colors;
 
-    /**
-     * @param x {number}
-     * @param y {number}
-     */
-    function paint(x, y) {
-        pixels[y][x] = currentColorIndex;
-    }
+    const dispatch = createEventDispatcher();
 </script>
 
 <table>
@@ -23,7 +16,7 @@
             <tr>
                 {#each row as colorIndex, x}
                     <td>
-                        <button style="background-color: {colors[colorIndex]};" on:click={() => paint(x, y)}></button>
+                        <button style="background-color: {colors[colorIndex]};" on:click={() => dispatch("paint", { x, y })}></button>
                     </td>
                 {/each}
             </tr>
